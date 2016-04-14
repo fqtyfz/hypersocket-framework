@@ -11,6 +11,7 @@ import java.util.Map;
 
 import com.hypersocket.input.FormTemplate;
 import com.hypersocket.permissions.AccessDeniedException;
+import com.hypersocket.resource.AbstractResourceRepository;
 
 public interface Authenticator {
 
@@ -34,4 +35,6 @@ public interface Authenticator {
 	String[] getAllowedSchemes();
 	
 	boolean isHidden();
+
+	AbstractResourceRepository<AuthenticationScheme> getRepository();
 }

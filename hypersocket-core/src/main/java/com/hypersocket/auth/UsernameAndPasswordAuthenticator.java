@@ -22,6 +22,7 @@ import com.hypersocket.realm.Principal;
 import com.hypersocket.realm.Realm;
 import com.hypersocket.realm.RealmRepository;
 import com.hypersocket.realm.RealmService;
+import com.hypersocket.resource.AbstractResourceRepository;
 
 @Component
 public class UsernameAndPasswordAuthenticator extends
@@ -39,7 +40,10 @@ public class UsernameAndPasswordAuthenticator extends
 	RealmService realmService;
 	
 	@Autowired
-	SystemConfigurationService systemConfigurationService; 
+	SystemConfigurationService systemConfigurationService;
+	
+	@Autowired
+	UsernameAndPasswordRepository repository;
 	
 	@PostConstruct
 	private void postConstruct() {
@@ -123,6 +127,11 @@ public class UsernameAndPasswordAuthenticator extends
 		}
 		
 		return success;
+	}
+
+	@Override
+	public AbstractResourceRepository<AuthenticationScheme> getRepository() {
+		return repository;
 	}
 
 }

@@ -759,7 +759,6 @@ public class AuthenticationServiceImpl extends
 			String authenticator) throws AccessDeniedException {
 		return getAuthenticator(authenticator).getRepository()
 				.getPropertyCategories(
-						getSchemeByResourceKey(getCurrentRealm(), scheme),
-						authenticator);
+						getSchemeByResourceKey(getCurrentRealm(), scheme));
 	}
 }

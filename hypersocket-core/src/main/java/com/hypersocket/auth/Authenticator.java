@@ -9,6 +9,7 @@ package com.hypersocket.auth;
 
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hypersocket.input.FormTemplate;
 import com.hypersocket.permissions.AccessDeniedException;
 import com.hypersocket.resource.AbstractResourceRepository;
@@ -25,16 +26,17 @@ public interface Authenticator {
 	public FormTemplate createTemplate(AuthenticationState state, Map params);
 
 	public String getResourceBundle();
-	
-	boolean isSecretModule();
-	
-	boolean isIdentityModule();
-	
-	AuthenticationModuleType getType();
-	 
-	String[] getAllowedSchemes();
-	
-	boolean isHidden();
 
+	boolean isSecretModule();
+
+	boolean isIdentityModule();
+
+	AuthenticationModuleType getType();
+
+	String[] getAllowedSchemes();
+
+	boolean isHidden();
+	
+	@JsonIgnore
 	AbstractResourceRepository<AuthenticationScheme> getRepository();
 }

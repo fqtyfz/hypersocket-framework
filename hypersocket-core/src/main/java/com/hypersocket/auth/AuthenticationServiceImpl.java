@@ -93,7 +93,7 @@ public class AuthenticationServiceImpl extends
 
 	@Autowired
 	UserVariableReplacement variableReplacement;
-	
+
 	Map<String, Authenticator> authenticators = new HashMap<String, Authenticator>();
 
 	List<PostAuthenticationStep> postAuthenticationSteps = new ArrayList<PostAuthenticationStep>();
@@ -293,7 +293,7 @@ public class AuthenticationServiceImpl extends
 					state.getRealm(),
 					AuthenticationServiceImpl.BROWSER_AUTHENTICATION_RESOURCE_KEY);
 		}
-		
+
 		state.setScheme(scheme);
 		state.setModules(repository.getModulesForScheme(state.getScheme()));
 
@@ -329,8 +329,8 @@ public class AuthenticationServiceImpl extends
 						break;
 					}
 					case INSUFFICIENT_DATA_NO_ERROR: {
-							state.setLastErrorMsg(null);
-							state.setLastErrorIsResourceKey(false);
+						state.setLastErrorMsg(null);
+						state.setLastErrorIsResourceKey(false);
 						break;
 					}
 					case AUTHENTICATION_SUCCESS: {
@@ -365,10 +365,10 @@ public class AuthenticationServiceImpl extends
 			Authenticator authenticator = authenticators.get(state
 					.getCurrentModule().getTemplate());
 
-			if(authenticator==null) {
+			if (authenticator == null) {
 				throw new FallbackAuthenticationRequired();
 			}
-			
+
 			if (authenticator.isSecretModule()
 					&& state.getPrincipal() instanceof FakePrincipal) {
 				state.setLastErrorMsg("error.genericLogonError");
@@ -491,7 +491,7 @@ public class AuthenticationServiceImpl extends
 					} catch (ResourceException e) {
 
 						log.error("Authentication Failed", e);
-						
+
 						eventService
 								.publishEvent(new AuthenticationAttemptEvent(
 										this, state, authenticator,
@@ -570,19 +570,23 @@ public class AuthenticationServiceImpl extends
 			sessionService.setCurrentPassword(session,
 					state.getParameter("password"));
 		}
-		
-		if(permissionService.hasSystemPermission(getCurrentPrincipal())) {
-			if(!realmService.getDefaultRealm().equals(getCurrentPrincipal().getRealm())) {
-				sessionService.switchRealm(session, realmService.getDefaultRealm());
+
+		if (permissionService.hasSystemPermission(getCurrentPrincipal())) {
+			if (!realmService.getDefaultRealm().equals(
+					getCurrentPrincipal().getRealm())) {
+				sessionService.switchRealm(session,
+						realmService.getDefaultRealm());
 			}
 		} else {
-			String altHomePage = configurationService.getValue("session.altHomePage");
-			if(StringUtils.isNotBlank(altHomePage)) {
-				altHomePage = variableReplacement.replaceVariables(getCurrentPrincipal(), altHomePage);
+			String altHomePage = configurationService
+					.getValue("session.altHomePage");
+			if (StringUtils.isNotBlank(altHomePage)) {
+				altHomePage = variableReplacement.replaceVariables(
+						getCurrentPrincipal(), altHomePage);
 				state.setHomePage(altHomePage);
-			}			
+			}
 		}
-		
+
 		return session;
 	}
 
@@ -600,8 +604,8 @@ public class AuthenticationServiceImpl extends
 			throw new IllegalStateException(
 					"There are no post authentcation steps to process!");
 		}
-		return modifyTemplate(state,
-				state.getCurrentPostAuthenticationStep().createTemplate(state));
+		return modifyTemplate(state, state.getCurrentPostAuthenticationStep()
+				.createTemplate(state));
 	}
 
 	@Override
@@ -628,7 +632,7 @@ public class AuthenticationServiceImpl extends
 
 		for (Authenticator a : authenticators.values()) {
 
-			if(a.isHidden()) {
+			if (a.isHidden()) {
 				continue;
 			}
 			if (scheme.getType() != AuthenticationModuleType.CUSTOM) {
@@ -669,23 +673,28 @@ public class AuthenticationServiceImpl extends
 			state.setLastRealmName(realmName);
 		}
 
-		if(log.isDebugEnabled()) {
-			log.debug("Looking up principal " + username + " in " + (hostRealm==null ? "all realms" : hostRealm.getName()));
+		if (log.isDebugEnabled()) {
+			log.debug("Looking up principal " + username + " in "
+					+ (hostRealm == null ? "all realms" : hostRealm.getName()));
 		}
-		
+
 		Principal principal = realmService.getPrincipalByName(hostRealm,
 				username, PrincipalType.USER);
 
 		if (principal == null) {
 
-			if(log.isDebugEnabled()) {
-				log.debug("Unable to find principal for " + username + " in " + (hostRealm==null ? "all realms" : hostRealm.getName()));
+			if (log.isDebugEnabled()) {
+				log.debug("Unable to find principal for "
+						+ username
+						+ " in "
+						+ (hostRealm == null ? "all realms" : hostRealm
+								.getName()));
 			}
-			
+
 			if (!realmService.isRealmStrictedToHost(hostRealm)) {
 
 				hostRealm = null;
-				
+
 				// Can we extract realm from username?
 				int idx;
 				idx = username.indexOf('\\');
@@ -710,8 +719,12 @@ public class AuthenticationServiceImpl extends
 			}
 
 			if (principal == null) {
-				if(log.isDebugEnabled()) {
-					log.debug("Still unable to find principal for " + username + " in " + (hostRealm==null ? "all realms" : hostRealm.getName()));
+				if (log.isDebugEnabled()) {
+					log.debug("Still unable to find principal for "
+							+ username
+							+ " in "
+							+ (hostRealm == null ? "all realms" : hostRealm
+									.getName()));
 				}
 				throw new PrincipalNotFoundException();
 			}
@@ -725,7 +738,8 @@ public class AuthenticationServiceImpl extends
 
 	@Override
 	public Session logonAnonymous(String remoteAddress, String userAgent,
-			Map<String, String> parameters, String serverName) throws AccessDeniedException {
+			Map<String, String> parameters, String serverName)
+			throws AccessDeniedException {
 
 		Session session = sessionService.openSession(remoteAddress,
 				realmService.getSystemPrincipal(), schemeRepository
@@ -743,7 +757,9 @@ public class AuthenticationServiceImpl extends
 	@Override
 	public Collection<PropertyCategory> getProperties(String scheme,
 			String authenticator) throws AccessDeniedException {
-		return getAuthenticator(authenticator).getRepository().getPropertyCategories(getSchemeByResourceKey(getCurrentRealm(), scheme), authenticator);
+		return getAuthenticator(authenticator).getRepository()
+				.getPropertyCategories(
+						getSchemeByResourceKey(getCurrentRealm(), scheme),
+						authenticator);
 	}
-
 }

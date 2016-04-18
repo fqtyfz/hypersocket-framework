@@ -48,6 +48,7 @@ public class UsernameAndPasswordAuthenticator extends
 	@PostConstruct
 	private void postConstruct() {
 		authenticationService.registerAuthenticator(this);
+		repository.loadPropertyTemplates("usernameAndPasswordProperties.xml");
 	}
 
 	@Override
@@ -135,5 +136,9 @@ public class UsernameAndPasswordAuthenticator extends
 	public AbstractResourceRepository<AuthenticationScheme> getRepository() {
 		return repository;
 	}
-
+	
+	@Override
+	public boolean hasProperties() {
+		return true;
+	}
 }

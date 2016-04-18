@@ -13,7 +13,6 @@ import java.util.Map;
 
 import com.hypersocket.input.FormTemplate;
 import com.hypersocket.permissions.AccessDeniedException;
-import com.hypersocket.properties.PropertyCategory;
 import com.hypersocket.realm.Principal;
 import com.hypersocket.realm.Realm;
 import com.hypersocket.session.Session;
@@ -69,7 +68,4 @@ public interface AuthenticationService extends PasswordEnabledAuthenticatedServi
 	Principal resolvePrincipalAndRealm(AuthenticationState state,
 			String username) throws AccessDeniedException,
 			PrincipalNotFoundException;
-
-	Collection<PropertyCategory> getProperties(String scheme, String authenticator) throws AccessDeniedException;
-
 }

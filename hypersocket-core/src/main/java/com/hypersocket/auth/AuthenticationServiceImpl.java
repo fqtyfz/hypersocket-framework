@@ -37,7 +37,6 @@ import com.hypersocket.permissions.PermissionService;
 import com.hypersocket.permissions.PermissionStrategy;
 import com.hypersocket.permissions.PermissionType;
 import com.hypersocket.permissions.SystemPermission;
-import com.hypersocket.properties.PropertyCategory;
 import com.hypersocket.realm.Principal;
 import com.hypersocket.realm.PrincipalType;
 import com.hypersocket.realm.Realm;
@@ -752,14 +751,5 @@ public class AuthenticationServiceImpl extends
 	@Override
 	public Collection<PostAuthenticationStep> getPostAuthenticationSteps() {
 		return new ArrayList<PostAuthenticationStep>(postAuthenticationSteps);
-	}
-
-	@Override
-	public Collection<PropertyCategory> getProperties(String scheme,
-			String authenticator) throws AccessDeniedException {
-		return getAuthenticator(authenticator).getRepository()
-				.getPropertyCategories(
-						getSchemeByResourceKey(getCurrentRealm(), scheme),
-						authenticator);
 	}
 }

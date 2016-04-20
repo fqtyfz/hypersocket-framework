@@ -137,7 +137,7 @@ public class UsernameAndPasswordAuthenticator extends
 	}
 	
 	@Override
-	public boolean hasProperties() {
-		return true;
+	public boolean isPropertiesModule() {
+		return false;
 	}
 }

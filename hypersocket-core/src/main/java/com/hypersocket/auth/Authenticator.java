@@ -40,5 +40,5 @@ public interface Authenticator {
 	@JsonIgnore
 	AbstractResourceRepository<AuthenticationScheme> getRepository();
 	
-	boolean hasProperties();
+	boolean isPropertiesModule();
 }

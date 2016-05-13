@@ -435,22 +435,6 @@ public class AuthenticationServiceImpl extends
 
 					break;
 				}
-				case AUTHENTICATION_FAILURE_BLOCKED_IP: {
-
-					if (!authenticator.isSecretModule() && state.hasNextStep()) {
-						state.fakeCredentials();
-						state.nextModule();
-					} else {
-						state.setLastErrorMsg("error.ipBlocked");
-						state.setLastErrorIsResourceKey(true);
-						eventService
-								.publishEvent(new AuthenticationAttemptEvent(
-										this, state, authenticator,
-										"hint.ipBlocked"));
-					}
-
-					break;
-				}
 				case AUTHENTICATION_SUCCESS: {
 					try {
 						success = true;

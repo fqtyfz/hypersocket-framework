@@ -42,9 +42,6 @@ public class UsernameAndPasswordAuthenticator extends
 	@Autowired
 	SystemConfigurationService systemConfigurationService;
 
-	@Autowired
-	UsernameAndPasswordRepository repository;
-
 	@PostConstruct
 	private void postConstruct() {
 		authenticationService.registerAuthenticator(this);
@@ -133,7 +130,7 @@ public class UsernameAndPasswordAuthenticator extends
 
 	@Override
 	public AbstractResourceRepository<AuthenticationScheme> getRepository() {
-		return repository;
+		return null;
 	}
 	
 	@Override

@@ -68,4 +68,6 @@ public interface AuthenticationService extends PasswordEnabledAuthenticatedServi
 	Principal resolvePrincipalAndRealm(AuthenticationState state,
 			String username) throws AccessDeniedException,
 			PrincipalNotFoundException;
+
+	FormTemplate getAuthenticationTemplate(String resourceKey, AuthenticationState state, Map params);
 }

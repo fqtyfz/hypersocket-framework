@@ -70,6 +70,4 @@ public interface AuthenticationService extends PasswordEnabledAuthenticatedServi
 			PrincipalNotFoundException;
 
 	FormTemplate getAuthenticationTemplate(String resourceKey, AuthenticationState state, Map params);
-
-
 }

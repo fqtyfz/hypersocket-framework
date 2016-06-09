@@ -59,6 +59,7 @@ import com.hypersocket.realm.events.UserCreatedEvent;
 import com.hypersocket.realm.events.UserDeletedEvent;
 import com.hypersocket.realm.events.UserEvent;
 import com.hypersocket.realm.events.UserUpdatedEvent;
+import com.hypersocket.resource.Resource;
 import com.hypersocket.resource.ResourceChangeException;
 import com.hypersocket.resource.ResourceCreationException;
 import com.hypersocket.resource.ResourceException;
@@ -306,12 +307,6 @@ public class RealmServiceImpl extends PasswordEnabledAuthenticatedServiceImpl
 		RealmProvider provider = getProviderForRealm(realm);
 		return provider.getValue(realm, resourceKey);
 	}
-	
-	@Override
-	public Map<String,String> getRealmProperties(Realm realm) {
-		RealmProvider provider = getProviderForRealm(realm);
-		return provider.getProperties(realm);
-	}
 
 	@Override
 	public String getDecryptedValue(Realm realm, String resourceKey) {
@@ -386,6 +381,14 @@ public class RealmServiceImpl extends PasswordEnabledAuthenticatedServiceImpl
 		assertAnyPermission(RealmPermission.READ, SystemPermission.SWITCH_REALM);
 
 		return realmRepository.getRealmById(id);
+	}
+	
+	@Override
+	public Realm getRealmByOwner(Long owner) throws AccessDeniedException {
+
+		assertAnyPermission(RealmPermission.READ, SystemPermission.SWITCH_REALM);
+
+		return realmRepository.getRealmByOwner(owner);
 	}
 
 	public Map<String, String> filterSecretProperties(Principal principal, RealmProvider provider,
@@ -767,7 +770,7 @@ public class RealmServiceImpl extends PasswordEnabledAuthenticatedServiceImpl
 	}
 
 	@Override
-	public Realm createRealm(String name, String module, Map<String, String> properties)
+	public Realm createRealm(String name, String module, Long owner, Map<String, String> properties)
 			throws AccessDeniedException, ResourceCreationException {
 
 		try {
@@ -784,7 +787,11 @@ public class RealmServiceImpl extends PasswordEnabledAuthenticatedServiceImpl
 
 			realmProvider.testConnection(properties);
 
-			Realm realm = realmRepository.createRealm(name, UUID.randomUUID().toString(), module, properties,
+			Realm realm = realmRepository.createRealm(name, 
+					UUID.randomUUID().toString(), 
+					module, 
+					owner, 
+					properties,
 					realmProvider);
 
 			configurationService.setValue(realm, "realm.userEditableProperties",
